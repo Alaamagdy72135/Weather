@@ -46,7 +46,7 @@ function displayCurrentWeather() {
         let monthName = month[d.getMonth()];
 
         cartona += `
-          <div class="col-4">
+          <div class="col-md-4">
             <div class="card" id="current">
               <div class="card-header d-flex justify-content-between">
                 <span class="text-white">${dayName}</span>
