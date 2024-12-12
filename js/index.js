@@ -27,15 +27,14 @@ async function getWeather(city, count = 3) {
     try {
         let response = await (await fetch(`https://api.weatherapi.com/v1/forecast.json?key=574d8bd828984989809203229240712&q=${city}&days=${count}`)).json();
         final = response;
-        displayCurrentWeather();
+        displayWeather();
     }
     catch (error) {
     }
 }
 
-getWeather("cairo", 3);
 
-function displayCurrentWeather() {
+function displayWeather() {
     let cartona = "";
 
     for (let i = 0; i < final.forecast.forecastday.length; i++) {
@@ -81,3 +80,34 @@ function displayCurrentWeather() {
     }
     forecast.innerHTML = cartona;
 }
+
+function getCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+    getWeather(`${position.coords.latitude},${position.coords.longitude}`, 3);
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERR:
+            alert("An unknown error occurred.");
+            break;
+    }
+}
+
+getCurrentLocation();
